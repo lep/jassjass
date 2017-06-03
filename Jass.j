@@ -1104,13 +1104,14 @@ public struct Parser
     
     method nextsym takes nothing returns integer
         if l.hasNext() then
+            call cur.destroy()
             set cur = l.next()
             //call print("nextsym: "+NAMES[cur.type])
             return cur.type
         else
             //call print("nextsym error: lexer empty")
-            set cur.type = 0
-            return 0
+            set cur.type = EOF
+            return EOF
         endif
     endmethod
     
@@ -1581,7 +1582,7 @@ public struct Parser
     
     private method pProgram takes nothing returns List /*Toplevel*/        
         if accept(NL) then
-            return parseProgram()
+            return pProgram()
         elseif accept(EOF) then
             return Nil
         else
