@@ -1468,7 +1468,7 @@ public struct Parser
         return TypeAndName.create(t, n)
     endmethod
     
-    private method parseParamlist takes nothing returns List
+    private method parseParamlist2 takes nothing returns List
         local TypeAndName e
         
         if accept(RETURNS) then
@@ -1476,11 +1476,20 @@ public struct Parser
         else
             set e = pTypeAndName()
             if accept(COMMA) then
-                return cons(e, parseParamlist())
+                return cons(e, parseParamlist2())
             else
                 call expect(RETURNS)
                 return cons(e, Nil)
             endif
+        endif
+    endmethod
+    
+    private method parseParamlist takes nothing returns List
+        if accept(NOTHING) then
+            call expect(RETURNS)
+            return Nil
+        else
+            return parseParamlist2()
         endif
     endmethod
     
