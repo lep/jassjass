@@ -282,11 +282,12 @@ public struct ArrayDecl extends VarDecl
 endstruct
 
 public struct NormalDecl extends VarDecl
+    boolean const
     string name
     string typ
     Expr init
     
-    static method create takes string t, string name, Expr init returns thistype
+    static method create takes boolean const, string t, string name, Expr init returns thistype
         local thistype this = allocate()
         set .name = name
         set .typ = t
@@ -1104,7 +1105,9 @@ public struct Parser
     
     method nextsym takes nothing returns integer
         if l.hasNext() then
-            call cur.destroy()
+            if cur != 0 then
+                call cur.destroy()
+            endif
             set cur = l.next()
             //call print("nextsym: "+NAMES[cur.type])
             return cur.type
@@ -1435,7 +1438,7 @@ public struct Parser
             endif
         endif
             
-        return NormalDecl.create(t, name, init)
+        return NormalDecl.create(const, t, name, init)
     endmethod
     
     private method parseGlobalVarDecls takes nothing returns List
