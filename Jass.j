@@ -17,6 +17,7 @@ globals
     public key MINUS
     public key MUL
     public key DIV
+    public key MOD
     public key AND
     public key OR
     public key NOT
@@ -1024,6 +1025,9 @@ public struct Lexer
         elseif (c=="/") then
             set .pos = .pos +1
             return Token.create(DIV, "")
+        elseif (c=="%") then
+            set .pos = .pos +1
+            return Token.create(MOD, "")
         elseif (c==",") then
             set .pos = .pos +1
             return Token.create(COMMA, "")
@@ -1140,7 +1144,7 @@ public struct Parser
     LT GT EQ NEQ LEQ GEQ
     NOT
     MINUS PLUS
-    MUL DIV
+    MUL DIV MOD
     */
     
     private method parseArgs takes nothing returns List
@@ -1235,7 +1239,7 @@ public struct Parser
         local integer t
         
         loop
-        exitwhen sym != MUL and sym != DIV
+        exitwhen sym != MUL and sym != DIV and sym != MOD
             set t = sym
             call nextsym()
             set lhs = mkOp(t, lhs, .p6())
@@ -1653,6 +1657,7 @@ private function init takes nothing returns nothing
     set NAMES[MINUS] = "MINUS"
     set NAMES[MUL] = "MUL"
     set NAMES[DIV] = "DIV"
+    set NAMES[MOD] = "MOD"
     set NAMES[AND] = "AND"
     set NAMES[OR] = "OR"
     set NAMES[NOT] = "NOT"
@@ -1698,6 +1703,7 @@ private function init takes nothing returns nothing
     set OPERATORS[PLUS] = "+"
     set OPERATORS[MUL] = "*"
     set OPERATORS[DIV] = "/"
+    set OPERATORS[MOD] = "%"
     set OPERATORS[EQ] = "=="
     set OPERATORS[NEQ] = "!="
     set OPERATORS[LEQ] = "<="
