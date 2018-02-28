@@ -666,7 +666,7 @@ private function isDelim takes string s returns boolean
     return s == " " or s == "\t" or s =="\n" or s=="\r" or s=="[" or s=="]" /*
         */ or s == "(" or s == ")" or s == "," or s =="." or s== "<" or s==">" /*
         */ or s == "/" or s=="*" or s== "+" or s =="-" or s=="$" or s== "=" /*
-        */ or s == "\"" or s =="'" or s == "!"
+        */ or s == "\"" or s =="'" or s == "!" or s == "%"
 endfunction
 
 private function isDigit takes string s returns boolean
